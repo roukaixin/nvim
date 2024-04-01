@@ -1,6 +1,6 @@
 return {
     "neoclide/coc.nvim",
-    build = "yarn install --frozen-lockfile",
+    branch = "release",
     config = function()
         vim.g.coc_global_extensions = {
             'coc-marketplace',
