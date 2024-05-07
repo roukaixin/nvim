@@ -1,3 +1,4 @@
+-- 代码补全
 return {
     "hrsh7th/nvim-cmp",
     dependencies = {
@@ -16,11 +17,15 @@ return {
                 end,
             },
             mapping = cmp.mapping.preset.insert({
-                ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                ['<C-Space>'] = cmp.mapping.complete(),
-                ['<C-e>'] = cmp.mapping.abort(),
-                ['<CR>'] = cmp.mapping.confirm({ select = true }),
+                -- 下一个
+                ['<Tab>'] = cmp.mapping.select_next_item(),
+                -- 上一个
+                ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+                -- 确认 回车键
+                ['<CR>'] = cmp.mapping.confirm({
+                    select = true ,
+                    behavior = cmp.ConfirmBehavior.Replace
+                }),
             }),
             sources = cmp.config.sources(
                     {
