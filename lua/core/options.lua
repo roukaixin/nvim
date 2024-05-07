@@ -5,10 +5,11 @@ opt.relativenumber = true
 -- 行号
 opt.number = true
 
--- 缩进
-opt.tabstop = 2
-opt.shiftwidth = 2
+-- tab 缩进
+opt.tabstop = 4
+opt.shiftwidth = 4
 opt.expandtab = true
+-- 自动缩进
 opt.autoindent = true
 
 -- 防止包裹

@@ -7,5 +7,6 @@ return {
             'coc-db',
             'coc-git',
         }
-    end
+    end,
+    enable = false
 }
