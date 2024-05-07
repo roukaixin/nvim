@@ -1,5 +1,6 @@
 return {
     "tpope/vim-dadbod",
+    event = "VeryLazy",
     config = function()
         vim.g.omni_sql_no_default_maps=1
         vim.g.db_ui_use_nerd_fonts=1
