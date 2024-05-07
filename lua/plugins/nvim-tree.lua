@@ -12,8 +12,6 @@ return {
         "nvim-tree/nvim-web-devicons",
     },
     config = function()
-        local HEIGHT_RATIO = 0.8
-        local WIDTH_RATIO = 0.5
         require("nvim-tree").setup({
             view = {
                 float = {
