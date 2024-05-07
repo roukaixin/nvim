@@ -1,3 +1,4 @@
 return {
-    "kristijanhusak/vim-dadbod-ui"
+    "kristijanhusak/vim-dadbod-ui",
+    enabled = false
 }
