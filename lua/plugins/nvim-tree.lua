@@ -7,10 +7,7 @@ return {
             "<C-h>", "<cmd>NvimTreeToggle<cr>", mode = "n", desc = "切换菜单树"
         }
     },
-    dependencies = {
-        -- 文件图标
-        "nvim-tree/nvim-web-devicons",
-    },
+    dependencies = { },
     config = function()
         require("nvim-tree").setup({
             view = {

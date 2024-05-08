@@ -5,12 +5,27 @@ return {
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
         "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim"
+        "williamboman/mason-lspconfig.nvim",
+        "folke/neoconf.nvim",
+        "folke/neodev.nvim",
+        "nvimdev/lspsaga.nvim",
+        {
+            "j-hui/fidget.nvim",
+            opts = { },
+        }
     },
     config = function()
         local lsp_config = require('lspconfig')
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
         local servers = {
+            lua_ls = {
+                settings = {
+                    Lua = {
+                        workspace = { checkThirdParty = false },
+                        telemetry = { enable = false },
+                    },
+                },
+            },
             clangd = {},
             rust_analyzer = {}
         }
@@ -19,6 +34,10 @@ return {
 
         end
 
+        require("neoconf").setup()
+        require("neodev").setup()
+        require("fidget").setup()
+        require("lspsaga").setup()
         require("mason").setup()
         require("mason-lspconfig").setup({
             ensure_installed = vim.tbl_keys(servers),
