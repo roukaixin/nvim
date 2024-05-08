@@ -1,15 +1,11 @@
 return {
     {
         "folke/tokyonight.nvim",
-        dependencies = {
-            "utilyre/barbecue.nvim",
-            "SmiteshP/nvim-navic",
-        },
+        lazy = false,
+        priority = 1000,
+        opts = {},
         config = function()
             vim.cmd[[colorscheme tokyonight-storm]]
-            require('barbecue').setup {
-                theme = 'tokyonight',
-            }
         end
     }
 }
