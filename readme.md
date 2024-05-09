@@ -22,6 +22,12 @@
 > clang-format
 创建 `~/.clang-format` , 并添加下面配置
 
+# 模糊搜索
+
+```shell
+sudo pacman -S ripgrep fzf
+```
+
 
 ```yaml
 #基于那个配置文件
