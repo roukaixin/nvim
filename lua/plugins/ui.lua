@@ -1,8 +1,20 @@
 return {
     {
         "akinsho/bufferline.nvim",
+        event = "VeryLazy",
+        dependencies = {
+            "famiu/bufdelete.nvim",
+        },
+        keys = {
+            { "<leader><tab>", "<cmd>BufferLineCycleNext<CR>", desc = "下一个标签" },
+            { "<leader>c", "<cmd>Bdelete<CR>", desc = "关闭当前标签" },
+        },
         config = function()
-            require("bufferline").setup {}
+            require("bufferline").setup {
+                options = {
+                    diagnostics = "nvim_lsp",
+                },
+            }
         end,
     },
     {
