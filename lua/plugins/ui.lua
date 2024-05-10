@@ -3,6 +3,7 @@ return {
         "akinsho/bufferline.nvim",
         event = "VeryLazy",
         dependencies = {
+            -- 删除标签(buf)
             "famiu/bufdelete.nvim",
         },
         keys = {
@@ -20,6 +21,7 @@ return {
     {
         "utilyre/barbecue.nvim",
         name = "barbecue",
+        event = { "BufWritePre" },
         version = "*",
         dependencies = {
             "SmiteshP/nvim-navic",
@@ -34,6 +36,7 @@ return {
     },
     {
         'nvim-lualine/lualine.nvim',
+        event = "VeryLazy",
         config = function()
             require('lualine').setup({
                 options = {
@@ -43,8 +46,13 @@ return {
         end
     },
     {
+        -- 缩进显示
         "lukas-reineke/indent-blankline.nvim",
         event = "VeryLazy",
+        dependencies = {
+            -- 彩虹括号
+            "HiPhish/rainbow-delimiters.nvim",
+        },
         main = "ibl",
         opts = {},
         config = function()
@@ -52,6 +60,7 @@ return {
         end
     },
     {
+        -- 相同单词高亮
         "RRethy/vim-illuminate",
         event = "VeryLazy",
         config = function()
@@ -59,6 +68,7 @@ return {
         end
     },
     {
+        -- 显示 git 信息
         "lewis6991/gitsigns.nvim",
         event = "VeryLazy",
         config = true,
