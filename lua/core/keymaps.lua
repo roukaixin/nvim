@@ -1,5 +1,5 @@
 -- 设置主键为空格
-vim.g.mapleader = " "
+vim.g.mapleader = "\\"
 
 local keymap = vim.keymap
 
