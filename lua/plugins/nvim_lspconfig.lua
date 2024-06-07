@@ -30,8 +30,8 @@ return {
             rust_analyzer = {}
         }
 
-        local on_attach = function(_, bufnr)
-            vim.keymap.set('n', '<C-p>', ':Lspsaga hover_doc', { buffer = bufnr })
+        local on_attach = function(_, buffer)
+            vim.keymap.set('n', '<leader>p', ':Lspsaga hover_doc', { buffer = buffer })
         end
 
         require("neoconf").setup()

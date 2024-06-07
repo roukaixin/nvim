@@ -1,4 +1,4 @@
--- 设置主键为空格
+-- leader 按键
 vim.g.mapleader = "\\"
 
 local keymap = vim.keymap
