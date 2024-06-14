@@ -20,6 +20,8 @@ keymap.set("v", "K", ":m '<-2<CR>gv=gv'")
 keymap.set("n", "<leader>sv", "<C-w>v")
 -- 垂直新增窗口
 keymap.set("n", "<leader>sh", "<C-w>s")
+-- 关闭窗口
+keymap.set("n", "<leader>sc", ":close<CR>")
 -- 取消搜索高亮
 keymap.set("n", "<leader>nh", ":nohl<CR>")
 -- ----------------------------------------
