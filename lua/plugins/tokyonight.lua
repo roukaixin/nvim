@@ -1,11 +1,19 @@
 return {
 	"folke/tokyonight.nvim",
 	opts = {
-		style = "moon",
+		style = "day",
 	},
 	config = function(_, opts)
 		require("tokyonight").setup(opts)
-		vim.cmd([[colorscheme tokyonight]])
+		vim.api.nvim_cmd({
+			cmd = "colorscheme",
+			args = {
+				"tokyonight",
+			},
+		}, {
+			output = false,
+		})
 	end,
 	lazy = false,
+	priority = 1000,
 }
