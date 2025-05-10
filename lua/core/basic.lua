@@ -30,3 +30,5 @@ vim.opt.showmode = false
 
 -- 复制到系统粘贴板
 vim.opt.clipboard = "unnamedplus"
+
+vim.opt.signcolumn = "yes"
