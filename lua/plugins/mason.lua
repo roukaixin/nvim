@@ -1,33 +1,22 @@
 -- lsp
 return {
-	"williamboman/mason.nvim",
-	event = "VeryLazy",
+	"mason-org/mason.nvim",
+	-- BufReadPost: 编辑存在文件，BufNewFile: 编辑一个不存在的文件
+	event = { "BufReadPost", "BufNewFile", "VeryLazy" },
 	dependencies = {
 		"neovim/nvim-lspconfig",
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 	},
-	opts = {},
-	config = function(_, opts)
-		require("mason").setup(opts)
-		local registry = require("mason-registry")
-
-		local function setup(name, config)
-			local success, package = pcall(registry.get_package, name)
-			if success and not package:is_installed() then
-				package:install()
-			end
-
-			local nvim_lsp = require("mason-lspconfig.mappings.server").package_to_lspconfig[name]
-			config.capabilities = require("blink.cmp").get_lsp_capabilities()
-			config.on_attach = function(client)
-				client.server_capabilities.documentFormattingProvider = false
-				client.server_capabilities.documentRangeFormattingProvider = false
-			end
-
-			require("lspconfig")[nvim_lsp].setup(config)
-		end
-
-		local servers = {
+	opts = {
+		mason = {},
+		["mason-lspconfig"] = {
+			automatic_enable = true,
+		},
+		formatter = {
+			lua = "stylua",
+			yaml = "yamlfmt",
+		},
+		lsp = {
 			["lua-language-server"] = {
 				settings = {
 					Lua = {
@@ -37,14 +26,55 @@ return {
 					},
 				},
 			},
-			["rust-analyzer"] = {},
-		}
+			["rust-analyzer"] = {
+				on_attach = function(_, bufnr)
+					vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+				end,
+			},
+			["dockerfile-language-server"] = {},
+			["docker-compose-language-service"] = {
+				filetypes = {
+					"yaml",
+					"yml",
+					"yaml.docker-compose",
+				},
+			},
+			["sqls"] = {},
+		},
+	},
+	config = function(_, opts)
+		require("mason").setup(opts.mason)
+		local registry = require("mason-registry")
 
-		for server, config in pairs(servers) do
+		local function install_package(pkg_name)
+			local success, pkg = pcall(registry.get_package, pkg_name)
+			if success and not pkg:is_installed() then
+				pkg:install()
+			end
+		end
+
+		for _, formatter in pairs(opts.formatter) do
+			install_package(formatter)
+		end
+
+		local function setup(pkg_name, config)
+			install_package(pkg_name)
+			local lsp_name = require("mason-lspconfig").get_mappings().package_to_lspconfig[pkg_name]
+			config.capabilities = require("blink.cmp").get_lsp_capabilities()
+			config.on_attach = function(client)
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+			end
+
+			vim.lsp.config(lsp_name, config)
+		end
+
+		for server, config in pairs(opts.lsp) do
 			setup(server, config)
 		end
 
-		vim.cmd([[LspStart]])
+		require("mason-lspconfig").setup(opts["mason-lspconfig"])
+		vim.lsp.inlay_hint.enable()
 		vim.diagnostic.config({
 			virtual_text = true,
 			update_in_insert = true,
