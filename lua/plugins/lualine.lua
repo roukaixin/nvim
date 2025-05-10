@@ -1,3 +1,4 @@
+-- 状态栏
 return {
 	"nvim-lualine/lualine.nvim",
 	dependencies = {
@@ -6,18 +7,31 @@ return {
 	opts = {
 		options = {
 			theme = "auto",
-			component_separators = { left = "", right = "" },
-			section_separators = { left = "", right = "" },
+			section_separators = "",
+			component_separators = "",
 		},
-		extensions = { "nvim-tree" },
 		sections = {
-			lualine_b = { "branch", "diff" },
+			lualine_a = { "mode" },
+			lualine_b = {
+				"branch",
+				"diff",
+			},
+			lualine_c = {
+				"filename",
+			},
 			lualine_x = {
-				"filesize",
+				{
+					"diagnostics",
+					sources = { "nvim_lsp" },
+					update_in_insert = true,
+				},
 				"encoding",
 				"filetype",
 			},
+			lualine_y = { "progress" },
+			lualine_z = { "location" },
 		},
+		extensions = { "neo-tree" },
 	},
 	lazy = false,
 }
