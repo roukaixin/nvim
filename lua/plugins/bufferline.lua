@@ -1,3 +1,4 @@
+-- tab 栏
 return {
 	"akinsho/bufferline.nvim",
 	dependencies = {
@@ -21,6 +22,16 @@ return {
 				end
 				return indicator
 			end,
+			offsets = {
+				{
+					filetype = "neo-tree",
+					text = function()
+						return vim.fn.getcwd()
+					end,
+					highlight = "Directory",
+					text_align = "left",
+				},
+			},
 		},
 	},
 	keys = {
@@ -32,4 +43,8 @@ return {
 		{ "<leader>bc", "<Cmd>BufferLinePickClose<CR>", silent = true, desc = "选择关闭那个 tab" },
 	},
 	lazy = false,
+	config = function(_, opts)
+		vim.opt.termguicolors = true
+		require("bufferline").setup(opts)
+	end,
 }
