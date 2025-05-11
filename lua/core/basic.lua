@@ -32,3 +32,17 @@ vim.opt.showmode = false
 vim.opt.clipboard = "unnamedplus"
 
 vim.opt.signcolumn = "yes"
+
+vim.opt.foldcolumn = "1"
+vim.opt.foldlevel = 99
+vim.opt.foldenable = true
+vim.opt.foldtext = vim.lsp.foldtext()
+vim.opt.fillchars = {
+	eob = " ",
+	fold = " ",
+	foldclose = "",
+	foldopen = "",
+	foldsep = " ",
+}
+
+vim.opt.foldmethod = "indent"
