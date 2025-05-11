@@ -1,8 +1,13 @@
 return {
 	"akinsho/toggleterm.nvim",
 	version = "*",
+	dependencies = {
+		-- 防止终端被覆盖
+		"stevearc/stickybuf.nvim",
+	},
 	enabled = true,
 	config = function()
+		require("stickybuf").setup({})
 		require("toggleterm").setup({})
 		function _G.set_terminal_keymaps()
 			local opts = { buffer = 0 }
