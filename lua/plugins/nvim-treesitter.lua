@@ -5,7 +5,7 @@ return {
 	event = "VeryLazy",
 	opts = {
 		auto_install = true,
-		ensure_installed = { "lua" },
+		ensure_installed = { "lua", "vim" },
 		highlight = { enable = true },
 	},
 }
