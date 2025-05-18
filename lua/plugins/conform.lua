@@ -6,6 +6,8 @@ return {
 			lua = { "stylua" },
 			rust = { "rustfmt" },
 			yaml = { "yamlfmt" },
+			javascript = { "eslint_d" },
+			typescript = { "eslint_d" },
 		},
 	},
 	keys = {
