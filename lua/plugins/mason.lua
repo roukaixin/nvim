@@ -6,17 +6,45 @@ return {
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"mason-org/mason-lspconfig.nvim",
+		"JavaHello/spring-boot.nvim",
 	},
 	opts = {
-		mason = {},
-		["mason-lspconfig"] = {
-			automatic_enable = true,
+		ui = {
+			border = "rounded",
 		},
-		formatter = {
+		registries = {
+			"github:indika-dev/personal-mason-registry",
+			"github:mason-org/mason-registry",
+		},
+	},
+	config = function(_, opts)
+		require("mason").setup(opts)
+		require("mason-lspconfig").setup({
+			automatic_enable = false,
+		})
+
+		require("spring_boot").setup({
+			ls_path = vim.fn.expand("$MASON/packages/vscode-spring-boot-tools/extension/language-server"),
+		})
+		local registry = require("mason-registry")
+		local jdtls_opts = {
+			filetypes = { "java", "yaml", "jproperties" },
+			init_options = {
+				jvm_args = {},
+				bundles = {},
+			},
+		}
+		local lombok_jar = vim.fn.expand("$MASON/packages/jdtls/lombok.jar")
+		table.insert(jdtls_opts.init_options.jvm_args, string.format("-javaagent:%s", lombok_jar))
+		require("spring_boot").init_lsp_commands()
+		jdtls_opts.init_options.bundles = require("spring_boot").java_extensions()
+
+		local formatter = {
 			lua = "stylua",
 			yaml = "yamlfmt",
-		},
-		lsp = {
+			java = "google-java-format",
+		}
+		local lsp = {
 			["lua-language-server"] = {
 				settings = {
 					Lua = {
@@ -26,25 +54,30 @@ return {
 					},
 				},
 			},
-			["rust-analyzer"] = {
-				on_attach = function(_, bufnr)
-					vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-				end,
-			},
+			-- rust
+			["rust-analyzer"] = {},
+			-- docker
 			["dockerfile-language-server"] = {},
-			["docker-compose-language-service"] = {
-				filetypes = {
-					"yaml",
-					"yml",
-					"yaml.docker-compose",
-				},
-			},
-			["sqls"] = {},
-		},
-	},
-	config = function(_, opts)
-		require("mason").setup(opts.mason)
-		local registry = require("mason-registry")
+			["docker-compose-language-service"] = {},
+			-- java
+			["jdtls"] = jdtls_opts,
+			-- vue、js
+			["vue-language-server"] = {},
+			["vtsls"] = {},
+		}
+		local dap = {}
+		local linter = {
+			-- sql
+			"sqlfluff",
+			-- docker
+			"hadolint",
+			-- ts、js
+			"eslint_d",
+		}
+		local other = {
+			-- spring boot
+			"vscode-spring-boot-tools",
+		}
 
 		local function install_package(pkg_name)
 			local success, pkg = pcall(registry.get_package, pkg_name)
@@ -53,31 +86,50 @@ return {
 			end
 		end
 
-		for _, formatter in pairs(opts.formatter) do
-			install_package(formatter)
-		end
-
 		local function setup(pkg_name, config)
 			install_package(pkg_name)
-			local lsp_name = require("mason-lspconfig").get_mappings().package_to_lspconfig[pkg_name]
-			config.capabilities = require("blink.cmp").get_lsp_capabilities()
+			local lsp_name = require("mason-lspconfig").get_mappings().package_to_lspconfig[pkg_name] or pkg_name
+
 			config.on_attach = function(client)
 				client.server_capabilities.documentFormattingProvider = false
 				client.server_capabilities.documentRangeFormattingProvider = false
 			end
 
 			vim.lsp.config(lsp_name, config)
+			vim.lsp.enable(lsp_name)
 		end
 
-		for server, config in pairs(opts.lsp) do
-			setup(server, config)
-		end
+		registry.refresh(function()
+			for _, formatter_pkg in pairs(formatter) do
+				install_package(formatter_pkg)
+			end
 
-		require("mason-lspconfig").setup(opts["mason-lspconfig"])
+			for _, dap_pkg in pairs(dap) do
+				install_package(dap_pkg)
+			end
+
+			for _, other_pkg in ipairs(other) do
+				install_package(other_pkg)
+			end
+
+			for _, linter_pkg in ipairs(linter) do
+				install_package(linter_pkg)
+			end
+
+			for lsp_pkg, config in pairs(lsp) do
+				setup(lsp_pkg, config)
+			end
+		end)
+
 		vim.lsp.inlay_hint.enable()
 		vim.diagnostic.config({
 			virtual_text = true,
 			update_in_insert = true,
+		})
+		vim.api.nvim_cmd({
+			cmd = "LspStart",
+		}, {
+			output = false,
 		})
 	end,
 }
