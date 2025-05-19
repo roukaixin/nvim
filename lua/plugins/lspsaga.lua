@@ -25,5 +25,6 @@ return {
 		{ "<leader>lr", "<Cmd>Lspsaga rename<CR>" },
 		{ "<leader>lc", "<Cmd>Lspsaga code_action<CR>" },
 		{ "<leader>lh", "<Cmd>Lspsaga hover_doc<CR>" },
+		{ "<leader>lg", "<Cmd>Lspsaga goto_definition<CR>" },
 	},
 }
