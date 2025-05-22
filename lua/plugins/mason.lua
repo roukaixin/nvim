@@ -37,44 +37,49 @@ return {
 		table.insert(jdtls_opts.init_options.jvm_args, lombok_jar)
 		jdtls_opts.init_options.bundles = require("spring_boot").java_extensions()
 
-		local formatter = {
-			lua = "stylua",
-			yaml = "yamlfmt",
-			java = "google-java-format",
-		}
-		local lsp = {
-			["lua-language-server"] = {
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" },
+		local mason_pkg = {
+			formatter = {
+				-- lua
+				"stylua",
+				-- yaml
+				"yamlfmt",
+				-- java
+				"google-java-format",
+			},
+			lsp = {
+				["lua-language-server"] = {
+					settings = {
+						Lua = {
+							diagnostics = {
+								globals = { "vim" },
+							},
 						},
 					},
 				},
+				-- rust
+				["rust-analyzer"] = {},
+				-- docker
+				["dockerfile-language-server"] = {},
+				["docker-compose-language-service"] = {},
+				-- java
+				["jdtls"] = jdtls_opts,
+				["vue-language-server"] = {},
+				["vtsls"] = {},
 			},
-			-- rust
-			["rust-analyzer"] = {},
-			-- docker
-			["dockerfile-language-server"] = {},
-			["docker-compose-language-service"] = {},
-			-- java
-			["jdtls"] = jdtls_opts,
-			-- vue、js
-			["vue-language-server"] = {},
-			["vtsls"] = {},
-		}
-		local dap = {}
-		local linter = {
-			-- sql
-			"sqlfluff",
-			-- docker
-			"hadolint",
-			-- ts、js
-			"eslint_d",
-		}
-		local other = {
-			-- spring boot
-			"vscode-spring-boot-tools",
+			dap = {},
+			-- 代码检查器
+			linter = {
+				-- sql
+				"sqlfluff",
+				-- docker
+				"hadolint",
+				-- ts、js
+				"eslint_d",
+			},
+			other = {
+				-- spring boot
+				"vscode-spring-boot-tools",
+			},
 		}
 
 		local function install_package(pkg_name)
@@ -98,28 +103,20 @@ return {
 		end
 
 		registry.refresh(function()
-			for _, formatter_pkg in pairs(formatter) do
-				install_package(formatter_pkg)
-			end
-
-			for _, dap_pkg in pairs(dap) do
-				install_package(dap_pkg)
-			end
-
-			for _, other_pkg in ipairs(other) do
-				install_package(other_pkg)
-			end
-
-			for _, linter_pkg in ipairs(linter) do
-				install_package(linter_pkg)
-			end
-
-			for lsp_pkg, config in pairs(lsp) do
-				setup(lsp_pkg, config)
+			for pkg_type, type_table in pairs(mason_pkg) do
+				if pkg_type == "lsp" then
+					for lsp_pkg, config in pairs(type_table) do
+						setup(lsp_pkg, config)
+					end
+				else
+					for _, pkg_name in pairs(type_table) do
+						install_package(pkg_name)
+					end
+				end
 			end
 		end)
 
-		vim.lsp.inlay_hint.enable()
+		-- vim.lsp.inlay_hint.enable()
 		vim.diagnostic.config({
 			virtual_text = true,
 			update_in_insert = true,
