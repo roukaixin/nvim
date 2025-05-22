@@ -1,15 +1,17 @@
 -- 补全
 return {
 	"saghen/blink.cmp",
+	enabled = true,
 	version = "1.*",
 	dependencies = {
 		"rafamadriz/friendly-snippets",
 	},
 	event = "VeryLazy",
 	opts = {
+        -- 补全
 		completion = {
 			documentation = {
-				auto_show = false,
+				auto_show = true,
 				window = {
 					border = "rounded",
 				},
@@ -43,6 +45,7 @@ return {
 				},
 			},
 		},
+		-- 方法签名
 		signature = {
 			enabled = true,
 			window = {
@@ -65,18 +68,24 @@ return {
 			["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 		},
 		sources = {
-			default = function(_)
-				local success, node = pcall(vim.treesitter.get_node)
-				if
-					success
-					and node
-					and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
-				then
-					return { "buffer" }
-				else
-					return { "lsp", "path", "snippets", "buffer" }
-				end
-			end,
+			default = {
+				"lsp",
+				"buffer",
+				"snippets",
+				"path",
+			},
+			-- default = function(_)
+			-- 	local success, node = pcall(vim.treesitter.get_node)
+			-- 	if
+			-- 		success
+			-- 		and node
+			-- 		and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
+			-- 	then
+			-- 		return { "buffer" }
+			-- 	else
+			-- 		return { "lsp", "path", "snippets", "buffer" }
+			-- 	end
+			-- end,
 		},
 		cmdline = {
 			enabled = true,

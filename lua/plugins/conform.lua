@@ -8,6 +8,7 @@ return {
 			yaml = { "yamlfmt" },
 			javascript = { "eslint_d" },
 			typescript = { "eslint_d" },
+			java = { "google-java-format" },
 		},
 	},
 	keys = {
