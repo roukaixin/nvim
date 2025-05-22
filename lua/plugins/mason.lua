@@ -13,7 +13,8 @@ return {
 			border = "rounded",
 		},
 		registries = {
-			"github:indika-dev/personal-mason-registry",
+			"lua:registry",
+			-- "github:indika-dev/personal-mason-registry",
 			"github:mason-org/mason-registry",
 		},
 	},
@@ -23,9 +24,7 @@ return {
 			automatic_enable = false,
 		})
 
-		require("spring_boot").setup({
-			ls_path = vim.fn.expand("$MASON/packages/vscode-spring-boot-tools/extension/language-server"),
-		})
+		require("spring_boot").setup({})
 		local registry = require("mason-registry")
 		local jdtls_opts = {
 			filetypes = { "java", "yaml", "jproperties" },
@@ -34,9 +33,8 @@ return {
 				bundles = {},
 			},
 		}
-		local lombok_jar = vim.fn.expand("$MASON/packages/jdtls/lombok.jar")
-		table.insert(jdtls_opts.init_options.jvm_args, string.format("-javaagent:%s", lombok_jar))
-		require("spring_boot").init_lsp_commands()
+		local lombok_jar = "-javaagent:" .. vim.fn.expand("$MASON/share/jdtls/lombok.jar")
+		table.insert(jdtls_opts.init_options.jvm_args, lombok_jar)
 		jdtls_opts.init_options.bundles = require("spring_boot").java_extensions()
 
 		local formatter = {
