@@ -51,8 +51,8 @@ return {
 				"stylua",
 				-- yaml
 				"yamlfmt",
-				-- java
-				"google-java-format",
+				-- c / c++
+				"clang-format",
 			},
 			lsp = {
 				["lua-language-server"] = {
@@ -91,6 +91,8 @@ return {
 						"vue",
 					},
 				},
+				-- c / c++
+				["clangd"] = {},
 			},
 			dap = {},
 			-- 代码检查器
