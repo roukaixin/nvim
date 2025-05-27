@@ -1,6 +1,5 @@
 return {
 	"nvim-telescope/telescope.nvim",
-	branch = "0.1.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
 		{
@@ -46,6 +45,14 @@ return {
 				require("telescope.builtin").buffers({})
 			end,
 			desc = "显示全部 buffers",
+			silent = true,
+		},
+		{
+			"<leader>fh",
+			function()
+				require("telescope.builtin").help_tags({})
+			end,
+			desc = "Telescope help tags",
 			silent = true,
 		},
 	},
