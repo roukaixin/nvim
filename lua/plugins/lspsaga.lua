@@ -20,6 +20,9 @@ return {
 			enable = false,
 			virtual_text = false,
 		},
+		ui = {
+			border = "rounded",
+		},
 	},
 	keys = {
 		{ "<leader>lr", "<Cmd>Lspsaga rename<CR>" },
