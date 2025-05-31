@@ -4,6 +4,7 @@ return {
 	opts = {
 		ft_ignore = {
 			"neo-tree",
+			"dbee",
 		},
 	},
 	config = function(_, opts)
