@@ -49,8 +49,6 @@ return {
 			formatter = {
 				-- lua
 				"stylua",
-				-- yaml
-				"yamlfmt",
 				-- c / c++
 				"clang-format",
 			},
