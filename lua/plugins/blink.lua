@@ -8,7 +8,7 @@ return {
 	},
 	event = "VeryLazy",
 	opts = {
-        -- 补全
+		-- 补全
 		completion = {
 			documentation = {
 				auto_show = true,
@@ -74,18 +74,6 @@ return {
 				"snippets",
 				"path",
 			},
-			-- default = function(_)
-			-- 	local success, node = pcall(vim.treesitter.get_node)
-			-- 	if
-			-- 		success
-			-- 		and node
-			-- 		and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
-			-- 	then
-			-- 		return { "buffer" }
-			-- 	else
-			-- 		return { "lsp", "path", "snippets", "buffer" }
-			-- 	end
-			-- end,
 		},
 		cmdline = {
 			enabled = true,
