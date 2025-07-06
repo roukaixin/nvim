@@ -1,4 +1,4 @@
--- lsp
+-- lsp 等下载管理插件
 return {
 	"mason-org/mason.nvim",
 	-- BufReadPost: 编辑存在文件，BufNewFile: 编辑一个不存在的文件

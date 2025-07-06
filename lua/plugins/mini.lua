@@ -1,5 +1,7 @@
+-- mini 相关插件
 return {
 	{
+        -- 通知插件
 		"echasnovski/mini.notify",
 		version = "*",
 		opts = {},
