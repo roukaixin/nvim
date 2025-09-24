@@ -10,6 +10,7 @@ return {
 			typescript = { "eslint_d" },
 			c = { "clang-format" },
 			sql = { "sqlfluff" },
+			nix = { "nixfmt" },
 		},
 	},
 	keys = {

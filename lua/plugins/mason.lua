@@ -31,6 +31,7 @@ return {
 				"stylua",
 				-- c / c++
 				"clang-format",
+				"nixfmt",
 			},
 			lsp = {
 				["lua-language-server"] = {
