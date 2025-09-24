@@ -6,7 +6,6 @@ return {
 	dependencies = {
 		"neovim/nvim-lspconfig",
 		"mason-org/mason-lspconfig.nvim",
-		"JavaHello/spring-boot.nvim",
 	},
 	opts = {
 		ui = {
@@ -23,27 +22,8 @@ return {
 		require("mason-lspconfig").setup({
 			automatic_enable = false,
 		})
-		require("spring_boot").setup({})
 
 		local registry = require("mason-registry")
-
-		local jdtls = function()
-			local default_config = require("lspconfig.configs.jdtls").default_config
-			local config = {}
-
-			config.filetypes = default_config.filetypes
-			table.insert(config.filetypes, "yaml")
-			table.insert(config.filetypes, "jproperties")
-
-			local lombok_jar = vim.fn.expand("$MASON/share/jdtls/lombok.jar")
-			config.cmd = default_config.cmd
-			table.insert(config.cmd, "--jvm-arg=-javaagent:" .. lombok_jar)
-
-			config.init_options = default_config.init_options
-			require("spring_boot").init_lsp_commands()
-			config.init_options.bundles = require("spring_boot").java_extensions()
-			return config
-		end
 
 		local mason_pkg = {
 			formatter = {
@@ -67,8 +47,6 @@ return {
 				-- docker
 				["dockerfile-language-server"] = {},
 				["docker-compose-language-service"] = {},
-				-- java
-				["jdtls"] = jdtls(),
 				-- vue
 				["vue-language-server"] = {
 					cmd = { "vue-language-server", "--stdio" },
@@ -91,6 +69,8 @@ return {
 				},
 				-- c / c++
 				["clangd"] = {},
+				-- nix
+				["nil"] = {},
 			},
 			dap = {},
 			-- 代码检查器
@@ -104,13 +84,13 @@ return {
 			},
 			other = {
 				-- spring boot
-				"vscode-spring-boot-tools",
+				-- "vscode-spring-boot-tools",
 			},
 		}
 
 		local function install_package(pkg_name)
 			local success, pkg = pcall(registry.get_package, pkg_name)
-			if success and not pkg:is_installed() then
+			if success and not registry.is_installed(pkg_name) then
 				pkg:install()
 			end
 		end
@@ -141,6 +121,15 @@ return {
 				end
 			end
 		end)
+
+		package.loaded["mason_api"] = {
+			install_package = function(pkg_name)
+				install_package(pkg_name)
+			end,
+			setup = function(pkg_name, config)
+				setup(pkg_name, config)
+			end,
+		}
 
 		-- vim.lsp.inlay_hint.enable()
 		vim.diagnostic.config({

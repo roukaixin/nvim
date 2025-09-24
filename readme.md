@@ -1,3 +1,10 @@
+# 先决条件
+
+- nix
+
+- tree-sitter-cli
+
+
 > 查看文件类型
 
 ```shell
