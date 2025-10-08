@@ -1,8 +1,8 @@
 # 先决条件
 
 - nix
-
 - tree-sitter-cli
+- unzip
 
 
 > 查看文件类型
